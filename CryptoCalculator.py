@@ -22,7 +22,7 @@ def open_help_url():
 
 def convert(curr_string, fiat):
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
-    formatted_curr_string = curr_string.replace(' ','').upper()
+    formatted_curr_string = curr_string.replace(' ', '').upper()
     curr_key = formatted_curr_string.split(',')
     while '' in curr_key:
         curr_key.remove('')
@@ -58,10 +58,8 @@ def convert(curr_string, fiat):
         currency_price = []
 
         for i in range(0, len(curr_key)):
-            print(str(i) + ' OINK')
             currency_name.append(data['data'][curr_key[i]]['name'] + ' \n(' + data['data'][curr_key[i]]['symbol'] + ')')
             currency_price.append(data['data'][curr_key[i]]['quote'][fiat]['price'])
-            print(str(i) + ' OK')
 
         graph_figure = plt.Figure(figsize=(6, 5), dpi=100)
         graph_axis = graph_figure.add_subplot(1, 1, 1)
@@ -70,10 +68,11 @@ def convert(curr_string, fiat):
         graph_canvas.draw()
         graph_axis.set_title('Cryptocurrency Prices')
         graph_axis.set_ylabel('Price (' + fiat + ')')
+        for i, v in enumerate(currency_price):
+            graph_axis.text(i, v + 3, str(round(v, 2)), ha='center', color='black')
         graph_canvas.get_tk_widget().place(relx=0, rely=0, relwidth=0.915, relheight=1)
 
     except KeyError as e:
-        print('ASS ASS ASS ASS ' + str(e))
         info_label['text'] = 'One or both crypto symbols is invalid.\n'
         info_label['text'] += 'Please use a supported\nabbreviated code.\n(e.g. BTC)'
 
